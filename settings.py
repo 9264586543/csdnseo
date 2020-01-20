@@ -17,7 +17,7 @@ URLS = ['https://blog.csdn.net/kdl_csdn/article/details/103962098',]
 # BeforeDawn表示凌晨时段,0-9点;DayTime白天时段,10-18点;Nigth夜晚时段,19-23点
 # READ_COUNTS每天要刷的阅读总量,Days每天的3个时段阅读量占比。Total_Days占比之和
 # TIME_SLEEP_DEFAULT 算法模式,取值[0,1].默认为0。用平均算法,取平均值。1用随机算法,用随机值的list
-TIME_SLEEP_DEFAULT = 0
+TIME_SLEEP_DEFAULT = 1
 READ_COUNTS = 300
 DAYS_SECONDS = 86400
 HOURS_SECONDS = 3600

@@ -15,7 +15,7 @@ from functools import reduce
 from bs4 import BeautifulSoup
 from exception import ProxySettingsError, HeadersSettingsError, UrlsSettingsError, ProxyCheckSettingsError, ProxyAuthSettingsError, TimeSleepSettingsError
 
-__version__ = 1.0.1
+__version__ = "1.0.1"
 
 class CsdnSeo:
     """csdn刷阅读,代理IP或header值为key"""
@@ -238,7 +238,7 @@ def main():
         for t in time_sleep_list:
             run_seo_main()
             s += 1
-            print("已完成刷量%s次" % s)
+            print("已完成刷量累计%s次" % s)
             print("距离下一次运行时间还有%s秒" % t)
             print("——————————————————————————————————")
             time.sleep(t)
