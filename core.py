@@ -15,6 +15,7 @@ from functools import reduce
 from bs4 import BeautifulSoup
 from exception import ProxySettingsError, HeadersSettingsError, UrlsSettingsError, ProxyCheckSettingsError, ProxyAuthSettingsError, TimeSleepSettingsError
 
+__version__ = 1.0.1
 
 class CsdnSeo:
     """csdn刷阅读,代理IP或header值为key"""
