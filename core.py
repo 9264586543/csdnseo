@@ -111,7 +111,7 @@ class CsdnSeo:
         soup = BeautifulSoup(r.text, "html.parser")
         read_counts = soup.select('.read-count')[0].text
         nums = read_counts.split(" ")[1]
-        print("阅读量%s" % nums)
+        print("博文{url}的阅读量{nums}".format(url=url, nums=nums))
         return r.text
 
 class RunTimesleep:
@@ -223,8 +223,8 @@ def run_seo_main():
         url = que.get()
         csdn.main(url)
         # 多url进行不同时间的刷量
-        #s = random.choice(range(1, 10))
-        #time.sleep(s)
+        s = random.choice(range(1, 10))
+        time.sleep(s)
     return True
 
 def main():
@@ -235,6 +235,7 @@ def main():
     s = 0
     while True:
         time_sleep_list = get_time_sleep_list()
+        print("获取到的sleep列表%s" % time_sleep_list)
         for t in time_sleep_list:
             run_seo_main()
             s += 1

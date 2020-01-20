@@ -6,7 +6,13 @@ import time
 import random
 import datetime
 import settings
+import OpenSSL
+import cryptography 
+import certifi
 from functools import reduce
+print(OpenSSL.__version__)
+print(cryptography.__version__)
+print(certifi.__version__)
 
 class TimeSleepTest:
     """
