@@ -7,19 +7,21 @@ import sys
 import time
 import queue
 import random
+import urllib3
 import datetime
 import requests
 import api
 import settings
 from functools import reduce
 from bs4 import BeautifulSoup
+from api import csdnseologger as log
 from exception import ProxySettingsError, HeadersSettingsError, UrlsSettingsError, ProxyCheckSettingsError, ProxyAuthSettingsError, TimeSleepSettingsError
-
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 __version__ = "1.0.1"
 
 class CsdnSeo:
     """csdn刷阅读,代理IP或header值为key"""
-
+    
     @staticmethod
     def urls_queue():
         """
@@ -52,8 +54,7 @@ class CsdnSeo:
             }
         return proxies
 
-    @staticmethod
-    def check_proxy(**kwargs):
+    def check_proxy(self, **kwargs):
         """
         对代理IP进行验证
         :return: bool
@@ -64,13 +65,14 @@ class CsdnSeo:
         if settings.IS_CHECK_PROXY == 1:
             proxies = CsdnSeo.proxies_format()
             try:
-                r = requests.get(url=settings.CHECK_PROXY_URL, headers=settings.HEADERS_DEFAULT, proxies=proxies)
+                r = requests.get(url=settings.CHECK_PROXY_URL, headers=settings.HEADERS_DEFAULT, proxies=proxies, verify=False)
                 if r.status_code not in [200, 301, 302,]:
                     print("代理异常")
                     return False
                 print("代理正常")
                 return True
             except Exception as e:
+                #self.logger.debug(e)
                 raise e
         if settings.IS_CHECK_PROXY == 0:
             pass
@@ -98,20 +100,20 @@ class CsdnSeo:
             r = requests.get(url=url, headers=settings.HEADERS_DEFAULT)
         elif settings.IS_HEADERS_DEFAULT == 0 and settings.IS_USE_PROXY == 1:
             proxies = CsdnSeo.proxies_format()
-            CsdnSeo().check_proxy()
-            r = requests.get(url=url, headers=settings.HEADERS_DEFAULT, proxies=proxies)
+            self.check_proxy()
+            r = requests.get(url=url, headers=settings.HEADERS_DEFAULT, proxies=proxies, verify=False)
         elif settings.IS_HEADERS_DEFAULT == 1 and settings.IS_USE_PROXY == 0:
             r = requests.get(url=url, headers=headers)
         else: # settings.IS_HEADERS_DEFAULT == 1 and settings.IS_USE_PROXY == 1
             proxies = CsdnSeo.proxies_format()
-            CsdnSeo().check_proxy()
-            r = requests.get(url=url, headers=headers, proxies=proxies)
+            self.check_proxy()
+            r = requests.get(url=url, headers=headers, proxies=proxies, verify=False)
 
         # 读取页面内容的目前阅读量,如果网站改版,这里也容易出错
         soup = BeautifulSoup(r.text, "html.parser")
         read_counts = soup.select('.read-count')[0].text
         nums = read_counts.split(" ")[1]
-        print("博文{url}的阅读量{nums}".format(url=url, nums=nums))
+        log.logger.info("博文{url}的阅读量{nums}".format(url=url, nums=nums))
         return r.text
 
 class RunTimesleep:
@@ -124,7 +126,7 @@ class RunTimesleep:
         raise TimeSleepSettingsError(
             "settings TIME_SLEEP_DEFAULT={} range exception".format(settings.TIME_SLEEP_DEFAULT)
             )
-
+    log.logger.info('settings TIME_SLEEP_DEFAULT={}'.format(settings.TIME_SLEEP_DEFAULT))
     @staticmethod
     def time_sleep_hour():
         """
@@ -202,7 +204,9 @@ class RunTimesleep:
         if settings.TIME_SLEEP_DEFAULT == 0:
             time_sleep_list = [settings.HOURS_SECONDS // RunTimesleep.time_sleep_hour()[1]]
         if settings.TIME_SLEEP_DEFAULT == 1:
-            time_sleep_list = RunTimesleep().get_random_choice()[0]
+            req = RunTimesleep().get_random_choice()
+            time_sleep_list = req[0]
+        log.logger.info("符合sleep条件的列表{}".format(time_sleep_list))
         return time_sleep_list
 
 def get_time_sleep_list():
@@ -223,7 +227,7 @@ def run_seo_main():
         url = que.get()
         csdn.main(url)
         # 多url进行不同时间的刷量
-        s = random.choice(range(1, 10))
+        s = random.choice(range(1, 5))
         time.sleep(s)
     return True
 
@@ -235,13 +239,11 @@ def main():
     s = 0
     while True:
         time_sleep_list = get_time_sleep_list()
-        print("获取到的sleep列表%s" % time_sleep_list)
         for t in time_sleep_list:
             run_seo_main()
             s += 1
-            print("已完成刷量累计%s次" % s)
-            print("距离下一次运行时间还有%s秒" % t)
-            print("——————————————————————————————————")
+            log.logger.info("已完成刷量累计%s次" % s)
+            log.logger.info("距离下一次运行时间还有%s秒" % t)
             time.sleep(t)
 
 if __name__ == '__main__':

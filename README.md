@@ -57,11 +57,17 @@
   - 本软件只供学习交流使用，勿作为商业用途
 
 #### 日志列子
-   - 成功log，如果是失败的，请带上失败的log给我，我尽力帮你调，如果刷量网站有变的话，也许会引起异常
+   - 成功log，如果是失败的，请带上失败的log给我，我尽力帮你调。
      ```
-		阅读量2127
-		<function CsdnSeo.main at 0x0000000003CE3158>函数运行时间0.582s
-		已完成刷量1次
-		距离下一次运行时间还有180秒
-		——————————————————————————————————
-	 ```
+	2020-01-21 15:10:02,878 - INFO: settings TIME_SLEEP_DEFAULT=1
+	2020-01-21 15:10:02,881 - INFO: 符合sleep条件的列表[88, 46, 144, 87, 119, 199, 17, 178, 160, 202, 327, 40, 122, 238, 21, 379, 187, 42, 211, 150]
+	2020-01-21 15:10:03,694 - INFO: 博文https://blog.csdn.net/kdl_csdn/article/details/103962098的阅读量2270
+	2020-01-21 15:10:06,362 - INFO: 博文https://blog.csdn.net/kdl_csdn/article/details/103985282的阅读量466
+	2020-01-21 15:10:09,785 - INFO: 博文https://blog.csdn.net/kdl_csdn/article/details/103986221的阅读量396
+	2020-01-21 15:10:14,205 - INFO: 博文https://blog.csdn.net/kdl_csdn/article/details/103989024的阅读量348
+	2020-01-21 15:10:16,260 - INFO: 博文https://blog.csdn.net/kdl_csdn/article/details/103999779的阅读量395
+	2020-01-21 15:10:19,843 - INFO: 博文https://blog.csdn.net/kdl_csdn/article/details/104023516的阅读量130
+	2020-01-21 15:10:23,846 - INFO: 已完成刷量累计1次
+	2020-01-21 15:10:23,846 - INFO: 距离下一次运行时间还有88秒
+
+     ```

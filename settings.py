@@ -3,20 +3,25 @@
 URLS 类型list,要刷的网页url。
 READ_COUNTS 每天要刷的阅读总量。
 HEADERS 模拟用户请求,每次请求带上的header参数。
-PROXY 代理IP参数,csdn经研究可以使用代理IP来刷阅读量。很有效,但要节制,新的博文控制好量
+PROXY 代理IP参数,csdn经研究可以使用代理IP来刷阅读量。亲测有效,但要节制,新的博文控制好量
 """
 from functools import reduce
 
-
 # urls类型list,要刷阅读的url,支持列表推导式
-URLS = ['https://blog.csdn.net/kdl_csdn/article/details/103962098',]
+URLS = ['https://blog.csdn.net/kdl_csdn/article/details/103962098', # python爬虫——requests库使用代理
+	'https://blog.csdn.net/kdl_csdn/article/details/103985282', # python爬虫——selenium+chrome使用代理
+	'https://blog.csdn.net/kdl_csdn/article/details/103986221', # python爬虫——selenium+firefox使用代理
+	'https://blog.csdn.net/kdl_csdn/article/details/103989024', # python爬虫——urllib使用代理
+	'https://blog.csdn.net/kdl_csdn/article/details/103999779', # python爬虫——scrapy的使用
+	'https://blog.csdn.net/kdl_csdn/article/details/104023516', # http状态码解释
+	]
 #URLS = []
 
 # DAYS_SECONDS 每天要刷的阅读总量
 # PS:csdn新用户发布新博文,建议用默认配置1天刷300次阅读即可。
 # BeforeDawn表示凌晨时段,0-9点;DayTime白天时段,10-18点;Nigth夜晚时段,19-23点
 # READ_COUNTS每天要刷的阅读总量,Days每天的3个时段阅读量占比。Total_Days占比之和
-# TIME_SLEEP_DEFAULT 算法模式,取值[0,1].默认为0。用平均算法,取平均值。1用随机算法,用随机值的list
+# TIME_SLEEP_DEFAULT 算法模式,取值[0,1].默认为0。用平均算法,取平均值。1用随机算法,随机值的list
 TIME_SLEEP_DEFAULT = 1
 READ_COUNTS = 300
 DAYS_SECONDS = 86400
@@ -55,10 +60,10 @@ HEADERS_DEFAULT = {
 # IS_PROXY_AUTH:代理IP的身份信息取值[0,1];默认0不需要;1需要,并且填写代理的用户名与密码。
 # 此处代理由快代理www.kuaidaili.com赞助,建议使用隧道代理。
 IS_USE_PROXY = 1
-IS_CHECK_PROXY = 1
+IS_CHECK_PROXY = 0
 CHECK_PROXY_URL = 'https://www.csdn.net/'
 PROXY = 'tps136.kdlapi.com:15818'
 IS_PROXY_AUTH = 1
 PROXY_USER = 't16878530245319'
-PROXY_PWD = 'jason1234'
+PROXY_PWD = 'npw245319'
 
