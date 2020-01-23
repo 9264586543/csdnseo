@@ -17,6 +17,7 @@ from bs4 import BeautifulSoup
 from api import csdnseologger as log
 from exception import ProxySettingsError, HeadersSettingsError, UrlsSettingsError, ProxyCheckSettingsError, ProxyAuthSettingsError, TimeSleepSettingsError
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
 __version__ = "1.0.1"
 
 class CsdnSeo:
@@ -72,7 +73,6 @@ class CsdnSeo:
                 print("代理正常")
                 return True
             except Exception as e:
-                #self.logger.debug(e)
                 raise e
         if settings.IS_CHECK_PROXY == 0:
             pass
@@ -101,14 +101,23 @@ class CsdnSeo:
         elif settings.IS_HEADERS_DEFAULT == 0 and settings.IS_USE_PROXY == 1:
             proxies = CsdnSeo.proxies_format()
             self.check_proxy()
-            r = requests.get(url=url, headers=settings.HEADERS_DEFAULT, proxies=proxies, verify=False)
+            try:
+                r = requests.get(url=url, headers=settings.HEADERS_DEFAULT, proxies=proxies, verify=False)
+            except Exception as e:
+                log.logger.error('出现故障了,重试,故障描述%s' % e)
+                time.sleep(1)
+                return self.main(url) #异常处理,暂时重新运行下main,发现有可能是header值一直是固定导致的。
         elif settings.IS_HEADERS_DEFAULT == 1 and settings.IS_USE_PROXY == 0:
             r = requests.get(url=url, headers=headers)
         else: # settings.IS_HEADERS_DEFAULT == 1 and settings.IS_USE_PROXY == 1
             proxies = CsdnSeo.proxies_format()
             self.check_proxy()
-            r = requests.get(url=url, headers=headers, proxies=proxies, verify=False)
-
+            try:
+                r = requests.get(url=url, headers=headers, proxies=proxies, verify=False)
+            except Exception as e:
+                log.logger.error('出现故障了,重试,故障描述%s' % e)
+                time.sleep(1)
+                return self.main(url)
         # 读取页面内容的目前阅读量,如果网站改版,这里也容易出错
         soup = BeautifulSoup(r.text, "html.parser")
         read_counts = soup.select('.read-count')[0].text
@@ -126,7 +135,10 @@ class RunTimesleep:
         raise TimeSleepSettingsError(
             "settings TIME_SLEEP_DEFAULT={} range exception".format(settings.TIME_SLEEP_DEFAULT)
             )
+    
+    # 记录下当前settings的算法模式
     log.logger.info('settings TIME_SLEEP_DEFAULT={}'.format(settings.TIME_SLEEP_DEFAULT))
+    
     @staticmethod
     def time_sleep_hour():
         """
@@ -158,7 +170,7 @@ class RunTimesleep:
             if hourly_read_counts <= 2:
                 a = random.choice(s)
                 b = 3600 - a
-                get_random_choice_list = [a,b]
+                get_random_choice_list = [a, b]
                 return get_random_choice_list
         if hourly  == "DayTime":
             s = [i for i in range(1, 8*60)]

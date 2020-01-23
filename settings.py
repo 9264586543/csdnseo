@@ -65,5 +65,5 @@ CHECK_PROXY_URL = 'https://www.csdn.net/'
 PROXY = 'tps136.kdlapi.com:15818'
 IS_PROXY_AUTH = 1
 PROXY_USER = 't16878530245319'
-PROXY_PWD = 'npw245319'
+PROXY_PWD = 'npw324123'
 
