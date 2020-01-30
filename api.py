@@ -3,12 +3,16 @@ api功能
 函数运行时间;代理格式化处理;检测代理可用性;
 多线程运行;随机筛选headers值;日志记录
 """
+import csv
 import time
+import random
 import logging
 import threading
 import requests
 import settings
 from logging import handlers
+from fake_useragent import UserAgent
+
 
 def spend_time(func):
     """
@@ -81,12 +85,18 @@ def thread_run(func, *args):
     # 阻塞--卡死界面！
     #t.join()
 
-def random_headers(headers):
+def random_headers():
     """
-    对于ua库随机选择。
+    使用fake_useragent的库,默认提取chrome的ua
+    暂时先用着,后面出一个api功能
     :return: headers
     """
-    pass
+    ua = UserAgent().chrome
+    if "ipad" or "iPad" in us:
+        random_headers()
+    else:
+        headers = {"User-Agent": ua}
+        return headers
 
 
 class Logger(object):

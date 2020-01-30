@@ -105,25 +105,27 @@ class CsdnSeo:
                 r = requests.get(url=url, headers=settings.HEADERS_DEFAULT, proxies=proxies, verify=False)
             except Exception as e:
                 log.logger.error('出现故障了,重试,故障描述%s' % e)
-                time.sleep(1)
-                return self.main(url) #异常处理,暂时重新运行下main,发现有可能是header值一直是固定导致的。
+                time.sleep(0.2)
+                return self.main(url) # 异常处理,暂时重新运行下main,发现有可能是header值一直是固定导致的。
         elif settings.IS_HEADERS_DEFAULT == 1 and settings.IS_USE_PROXY == 0:
+            headers = api.random_headers()
             r = requests.get(url=url, headers=headers)
         else: # settings.IS_HEADERS_DEFAULT == 1 and settings.IS_USE_PROXY == 1
             proxies = CsdnSeo.proxies_format()
             self.check_proxy()
+            headers = api.random_headers()
             try:
                 r = requests.get(url=url, headers=headers, proxies=proxies, verify=False)
             except Exception as e:
                 log.logger.error('出现故障了,重试,故障描述%s' % e)
-                time.sleep(1)
+                time.sleep(0.2)
                 return self.main(url)
         # 读取页面内容的目前阅读量,如果网站改版,这里也容易出错
         soup = BeautifulSoup(r.text, "html.parser")
         read_counts = soup.select('.read-count')[0].text
         nums = read_counts.split(" ")[1]
         log.logger.info("博文{url}的阅读量{nums}".format(url=url, nums=nums))
-        return r.text
+        return None
 
 class RunTimesleep:
     """

@@ -9,12 +9,10 @@ import settings
 import OpenSSL
 import cryptography 
 import certifi
+import api
 from functools import reduce
 from selenium import webdriver
 from bs4 import BeautifulSoup
-print(OpenSSL.__version__)
-print(cryptography.__version__)
-print(certifi.__version__)
 
 class TimeSleepTest:
     """
@@ -98,27 +96,8 @@ class TimeSleepTest:
         return a
 
 
-ua = 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.131 Safari/537.36'
-ua1 = 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0'
-
-def selenium_webdriver():
-    """此方法可以不用代理，根据ua去刷阅读,不过刷的要慢一点。但是不花钱,找一个ua库即可"""
-    # key值为ua
-    chrome_options = webdriver.ChromeOptions()
-    # 设置ua
-    chrome_options.add_argument('user-agent=%s' % ua)
-    # 无界面启动chrome
-    chrome_options.add_argument('--headless')
-    # 禁止图片加载,提高速度
-    chrome_options.add_argument('blink-settings=imagesEnabled=false')
-    chrome = webdriver.Chrome(options=chrome_options)
-    chrome.get('https://blog.csdn.net/kdl_csdn/article/details/104023516')
-    html = chrome.page_source
-    chrome.quit()
-    soup = BeautifulSoup(html, "html.parser")
-    read_counts = soup.select('.read-count')[0].text
-    print(read_counts)
-
 if __name__ == '__main__':
-    t = TimeSleepTest()
-    print(t.test_random_choice())
+    #t = TimeSleepTest()
+    #print(t.test_random_choice())
+    s = api.random_headers()
+    print(s)

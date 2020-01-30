@@ -46,7 +46,7 @@ BeforeDawn_Every_Hours = BeforeDawn_Counts // len(BeforeDawn)
 DayTime_Every_Hours = DayTime_Counts // len(DayTime)
 Nigth_Every_Hours = Nigth_Counts // len(Nigth)
 
-# IS_HEADERS_DEFAULT:header值取值[0,1]。0默认;1用户自定义, 支持调用第三方的UA库
+# IS_HEADERS_DEFAULT:header值取值[0,1]。0默认;1随机调用ua.csv文件的headers
 IS_HEADERS_DEFAULT = 0
 HEADERS_DEFAULT = {
             "User-Agent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.131 Safari/537.36",
