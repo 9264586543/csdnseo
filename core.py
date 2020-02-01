@@ -103,8 +103,13 @@ class CsdnSeo:
             self.check_proxy()
             try:
                 r = requests.get(url=url, headers=settings.HEADERS_DEFAULT, proxies=proxies, verify=False)
+                req = '1'
+                sql = "INSERT INTO csdnseo(url, req)VALUES('%s', '%s')" % (url, req)
+                api.csdn_mysqldb(sql)
             except Exception as e:
                 log.logger.error('出现故障了,重试,故障描述%s' % e)
+                sql = "INSERT INTO csdnseo(url)VALUES('%s')" % (url)
+                api.csdn_mysqldb(sql)
                 time.sleep(0.2)
                 return self.main(url) # 异常处理,暂时重新运行下main,发现有可能是header值一直是固定导致的。
         elif settings.IS_HEADERS_DEFAULT == 1 and settings.IS_USE_PROXY == 0:
@@ -115,9 +120,14 @@ class CsdnSeo:
             self.check_proxy()
             headers = api.random_headers()
             try:
-                r = requests.get(url=url, headers=headers, proxies=proxies, verify=False)
+                r = requests.get(url=url, headers=settings.HEADERS_DEFAULT, proxies=proxies, verify=False)
+                req = '1'
+                sql = "INSERT INTO csdnseo(url, req)VALUES('%s', '%s')" % (url, req)
+                api.csdn_mysqldb(sql)
             except Exception as e:
                 log.logger.error('出现故障了,重试,故障描述%s' % e)
+                sql = "INSERT INTO csdnseo(url)VALUES('%s')" % (url)
+                api.csdn_mysqldb(sql)
                 time.sleep(0.2)
                 return self.main(url)
         # 读取页面内容的目前阅读量,如果网站改版,这里也容易出错

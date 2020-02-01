@@ -6,6 +6,7 @@ api功能
 import csv
 import time
 import random
+import pymysql
 import logging
 import threading
 import requests
@@ -132,3 +133,21 @@ csdnseologger = Logger('/data/logs/csdnseo/csdnseo.log', level='debug')
 
 def test_check_proxy():
     return check_proxy(1)
+
+def csdn_mysqldb(sql):
+    """
+    操作csdnseo数据库,插入csdnseo表数据
+    :parma sql;
+    :return:
+    """
+    db = pymysql.connect("localhost","root","123456","csdnseo")
+    cur = db.cursor()
+    try:
+        cur.execute(sql)
+        db.commit()
+    except Exception as e:
+        db.rollback()
+        raise e
+    db.close()
+    return None
+

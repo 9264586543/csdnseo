@@ -4,6 +4,7 @@
 
 import time
 import random
+import pymysql
 import datetime
 import settings
 import OpenSSL
@@ -95,9 +96,24 @@ class TimeSleepTest:
                 break
         return a
 
+def csdn_mysqldb():
+    db = pymysql.connect("localhost","root","123456","csdnseo")
+    cur = db.cursor()
+    url = 'www.baidu.com'
+    req = '1'
+    sql = "INSERT INTO csdnseo(url, req)VALUES('%s', '%s')" % (url, req)
+    try:
+        cur.execute(sql)
+        db.commit()
+    except Exception as e:
+        db.rollback()
+        raise e
+    db.close()
+    return None
+
 
 if __name__ == '__main__':
     #t = TimeSleepTest()
     #print(t.test_random_choice())
-    s = api.random_headers()
-    print(s)
+    #s = api.random_headers()
+    csdn_mysqldb()
