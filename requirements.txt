@@ -3,5 +3,5 @@ bs4==0.0.1
 requests==2.22.0
 pyOpenSSL==19.1.0
 cryptography==2.8
-certifi==2019.03.09
+certifi==2022.12.7
 
